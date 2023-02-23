@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class GradientDescentFamily:
@@ -39,11 +40,16 @@ class GradientDescentFamily:
 
     def Vanilla_Gradient_Descent(self):
         w, b, loss = 0.0, 0.0, 0.0
-        for epoch in range(600):
+        for epoch in range(200):
             w, b = self.Get_Gradient()
 
             y_pred = w * self.X + b
             loss = np.sum((self.Y - y_pred) ** 2) / self.X.shape[0]
+            plt.scatter(w, epoch, color='b')
+            plt.scatter(b, epoch, color='r')
+            # plt.plot(loss, epoch, color='g')
+
+        plt.show()
 
         print(f'w: {w}, b : {b}, final loss: {loss}')
 
