@@ -12,11 +12,12 @@ class GradientDescentFamily:
     lr = 0.0
     gamma = 0.0
 
-    def __init__(self, w, b, lr):
+    def __init__(self, w, b, lr, gamma):
         self.w = w
         self.b = b
 
         self.lr = lr
+        self.gamma = gamma
 
         self.X = np.array([1, 3.5, 6])
         self.Y = np.array([4, 6.5, 9])
@@ -54,13 +55,25 @@ class GradientDescentFamily:
     def Momentum_Gradient_Descent(self):
         dldw, dldb = self.Get_Gradient()
 
-        pass
+        for epoch in range(300):
+            dldw, dldb = self.Get_Gradient()
+            # print(dldw, dldb, self.w, self.b)
+
+            self.velocity = self.gamma * self.velocity + self.lr * np.sum(dldw) / self.X.shape[0]
+
+            self.w -= self.velocity
+
+            # self.w -= self.lr * np.sum(dldw) / self.X.shape[0]
+            self.b -= self.lr * np.sum(dldb) / self.X.shape[0]
+
+        print(f'w: {self.w}, b : {self.b}')
 
 
 if __name__ == '__main__':
-    gd: GradientDescentFamily = GradientDescentFamily(0.0, 0.0, 0.05)
+    gd: GradientDescentFamily = GradientDescentFamily(0.0, 0.0, 0.05, 0.001)
 
     gd.Vanilla_Gradient_Descent()
+    gd.Momentum_Gradient_Descent()
     # for i in range(200):
     #     dldw, dldb = self.Get_Gradient()
     #     print(dldw, dldb, self.w, self.b)
