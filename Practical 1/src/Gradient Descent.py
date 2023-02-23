@@ -32,10 +32,12 @@ class GradientDescentFamily:
         #     dldw += -2 * xi * (yi - (self.w * xi + self.b))
         #     dldb += -2 * (yi - (self.w * xi + self.b))
 
-        self.w -= self.lr * np.sum(dldw) / N
-        self.b -= self.lr * np.sum(dldb) / N
+        # self.w -= self.lr * np.sum(dldw) / N
+        # self.b -= self.lr * np.sum(dldb) / N
+        #
+        # return self.w, self.b
 
-        return self.w, self.b
+        return dldw, dldb
 
     def Vanilla_Gradient_Descent(self):
         w, b, loss = 0.0, 0.0, 0.0
@@ -47,8 +49,16 @@ class GradientDescentFamily:
 
         print(f'w: {w}, b : {b}, final loss: {loss}')
 
+    def Momentum_Gradient_Descent(self):
+        w, b, loss, velocity = 0.0, 0.0, 0.0, 0.0
+        pass
+
 
 if __name__ == '__main__':
     gd: GradientDescentFamily = GradientDescentFamily(0.0, 0.0, 0.05)
 
-    gd.Vanilla_Gradient_Descent()
+    # gd.Vanilla_Gradient_Descent()
+    for i in range(10):
+        print(gd.Get_Gradient())
+
+
