@@ -47,15 +47,6 @@ class GradientDescentFamily:
 
         print(f'w: {w}, b : {b}, final loss: {loss}')
 
-    def Momentum_Gradient_Descent(self):
-        w, b = 0.0, 0.0
-        velocity = 0.0
-        for epoch in range(600):
-            w, b = self.Get_Gradient()
-
-            y_pred = w * self.X + b
-            loss = np.sum((self.Y - y_pred) ** 2) / self.X.shape[0]
-
 
 if __name__ == '__main__':
     gd: GradientDescentFamily = GradientDescentFamily(0.0, 0.0, 0.05)
