@@ -43,6 +43,7 @@ class GradientDescentFamily:
         return dldw, dldb
 
     def Vanilla_Gradient_Descent(self):
+        loss = 0.0
         for epoch in range(300):
             dldw, dldb = self.Get_Gradient()
             # print(dldw, dldb, self.w, self.b)
@@ -50,7 +51,10 @@ class GradientDescentFamily:
             self.w -= self.lr * np.sum(dldw) / self.X.shape[0]
             self.b -= self.lr * np.sum(dldb) / self.X.shape[0]
 
-        print(f'w: {self.w}, b : {self.b}')
+            y_pred = self.w * self.X + self.b
+            loss = np.sum((self.Y - y_pred) ** 2) / self.X.shape[0]
+
+        print(f'w: {self.w}, b : {self.b}, final loss : {loss}')
 
     def Momentum_Gradient_Descent(self):
         dldw, dldb = self.Get_Gradient()
