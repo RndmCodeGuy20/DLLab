@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -59,6 +60,11 @@ class GradientDescentFamily:
 
             y_pred = self.w * self.X + self.b
             loss = np.sum((self.Y - y_pred) ** 2) / self.N
+
+            plt.scatter(epoch, self.w, color='b')
+            plt.scatter(epoch, self.b, color='r')
+            # plt.plot(epoch, loss, color='g')
+        plt.show()
 
         print(f'w: {self.w}, b : {self.b}, final loss : {loss}')
 
