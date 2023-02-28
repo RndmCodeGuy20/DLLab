@@ -47,6 +47,19 @@ class GradientDescentFamily:
 
         return dldw, dldb
 
+    @staticmethod
+    def Get_Gradient_Quadratic(x):
+        dldx = 0.0
+        dldy = 0.0
+
+        dldx += 2 * x
+        return dldx
+
+    @staticmethod
+    def Vanilla_Gradient_Descent_Quadratic():
+        for epoch in range(30):
+            pass
+
     def Vanilla_Gradient_Descent(self):
         loss = 0.0
         self.w = 0.0
