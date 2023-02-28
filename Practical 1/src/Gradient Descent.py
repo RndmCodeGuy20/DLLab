@@ -1,11 +1,16 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+
+sns.set_style('darkgrid')
+fig, ax = plt.subplot(2, 3)
 
 
 class GradientDescentFamily:
     w = 0.0
     b = 0.0
     velocity = 0.0
+    velocity_b = 0.0
 
     X = np.array([])
     Y = np.array([])
@@ -14,6 +19,8 @@ class GradientDescentFamily:
     gamma = 0.0
 
     N = 0
+
+    colors = ["#9b5de5", "#f15bb5", "#fee440", "#00bbf9", "#00f5d4"]
 
     def __init__(self, w, b, lr, gamma):
         self.w = w
@@ -36,29 +43,7 @@ class GradientDescentFamily:
         dldw += -2 * self.X * (self.Y - (self.w * self.X + self.b))
         dldb += -2 * (self.Y - (self.w * self.X + self.b))
 
-        # for xi, yi in zip(self.X, self.Y):
-        #     dldw += -2 * xi * (yi - (self.w * xi + self.b))
-        #     dldb += -2 * (yi - (self.w * xi + self.b))
-
-        # self.w -= self.lr * np.sum(dldw) / N
-        # self.b -= self.lr * np.sum(dldb) / N
-        #
-        # return self.w, self.b
-
         return dldw, dldb
-
-    @staticmethod
-    def Get_Gradient_Quadratic(x):
-        dldx = 0.0
-        dldy = 0.0
-
-        dldx += 2 * x
-        return dldx
-
-    @staticmethod
-    def Vanilla_Gradient_Descent_Quadratic():
-        for epoch in range(30):
-            pass
 
     def Vanilla_Gradient_Descent(self):
         loss = 0.0
@@ -82,18 +67,19 @@ class GradientDescentFamily:
         print(f'w: {self.w}, b : {self.b}, final loss : {loss}')
 
     def Momentum_Gradient_Descent(self):
-        dldw, dldb = self.Get_Gradient()
         self.w = 0.0
         self.b = 0.0
         loss = 0.0
 
         for epoch in range(300):
             dldw, dldb = self.Get_Gradient()
-            # print(dldw, dldb, self.w, self.b)
+            print(self.w, self.b)
 
             self.velocity = self.gamma * self.velocity + self.lr * np.sum(dldw) / self.N
-
             self.w -= self.velocity
+
+            # self.velocity_b = self.gamma * self.velocity_b + self.lr * np.sum(dldb) / self.N
+            # self.b -= self.velocity_b
 
             # self.w -= self.lr * np.sum(dldw) / self.X.shape[0]
             self.b -= self.lr * np.sum(dldb) / self.N
@@ -109,9 +95,3 @@ if __name__ == '__main__':
 
     gd.Vanilla_Gradient_Descent()
     gd.Momentum_Gradient_Descent()
-    # for i in range(200):
-    #     dldw, dldb = self.Get_Gradient()
-    #     print(dldw, dldb, self.w, self.b)
-    #
-    #     self.w -= self.lr * np.sum(dldw) / self.X.shape[0]
-    #     self.b -= self.lr * np.sum(dldb) / self.X.shape[0]
