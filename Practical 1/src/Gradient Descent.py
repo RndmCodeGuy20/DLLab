@@ -3,14 +3,14 @@ import numpy as np
 import seaborn as sns
 
 sns.set_style('darkgrid')
-fig, ax = plt.subplot(2, 3)
+fig, axs = plt.subplots(2, 3, figsize=(20, 15))
+fig.suptitle("Weights, Bias & Loss", fontsize=32)
 
 
 class GradientDescentFamily:
     w = 0.0
     b = 0.0
-    velocity = 0.0
-    velocity_b = 0.0
+    velocity, velocity_b = 0.0, 0.0
 
     X = np.array([])
     Y = np.array([])
@@ -49,7 +49,7 @@ class GradientDescentFamily:
         loss = 0.0
         self.w = 0.0
         self.b = 0.0
-        for epoch in range(300):
+        for epoch in range(301):
             dldw, dldb = self.Get_Gradient()
             # print(dldw, dldb, self.w, self.b)
 
@@ -59,10 +59,15 @@ class GradientDescentFamily:
             y_pred = self.w * self.X + self.b
             loss = np.sum((self.Y - y_pred) ** 2) / self.N
 
-            plt.scatter(epoch, self.w, color='b')
-            plt.scatter(epoch, self.b, color='r')
+            axs[0, 0].scatter(epoch, self.w, color=self.colors[0], s=5, alpha=0.7)
+            axs[0, 0].set_title("epochs vs weight (vanilla)", fontsize=24)
+            axs[0, 1].scatter(epoch, self.b, color=self.colors[1], s=5, alpha=0.7)
+            axs[0, 1].set_title("epochs vs bias (vanilla)", fontsize=24)
+            axs[0, 2].plot(epoch, loss, color=self.colors[2], marker='.', alpha=0.7)
+            axs[0, 2].set_title("epochs vs loss (vanilla)", fontsize=24)
+
             # plt.plot(epoch, loss, color='g')
-        plt.show()
+        # plt.show()
 
         print(f'w: {self.w}, b : {self.b}, final loss : {loss}')
 
@@ -71,9 +76,9 @@ class GradientDescentFamily:
         self.b = 0.0
         loss = 0.0
 
-        for epoch in range(300):
+        for epoch in range(301):
             dldw, dldb = self.Get_Gradient()
-            print(self.w, self.b)
+            # print(self.w, self.b)
 
             self.velocity = self.gamma * self.velocity + self.lr * np.sum(dldw) / self.N
             self.w -= self.velocity
@@ -87,6 +92,13 @@ class GradientDescentFamily:
             y_pred = self.w * self.X + self.b
             loss = np.sum((self.Y - y_pred) ** 2) / self.N
 
+            axs[1, 0].scatter(epoch, self.w, color=self.colors[4], s=5, alpha=0.7)
+            axs[1, 0].set_title("epochs vs weight (momentum)", fontsize=24)
+            axs[1, 1].scatter(epoch, self.b, color=self.colors[3], s=5, alpha=0.7)
+            axs[1, 1].set_title("epochs vs bias (momentum)", fontsize=24)
+            axs[1, 2].plot(epoch, loss, color=self.colors[2], marker='.', alpha=0.7)
+            axs[1, 2].set_title("epochs vs loss (momentum)", fontsize=24)
+
         print(f'w: {self.w}, b : {self.b}, final loss : {loss}')
 
 
@@ -95,3 +107,5 @@ if __name__ == '__main__':
 
     gd.Vanilla_Gradient_Descent()
     gd.Momentum_Gradient_Descent()
+
+    plt.show()
