@@ -87,7 +87,7 @@ class GradientDescentFamilyUpdated:
         plt.contourf(X, Y, Z, cmap='Spectral')
         plt.colorbar()
 
-    def AdaGrad(self, x: float, y: float, lr: float) -> None:
+    def AdaGrad(self, x: float, y: float) -> None:
         """
 
         :param x:
@@ -102,10 +102,10 @@ class GradientDescentFamilyUpdated:
             del_x, del_y = self.Get_Gradient(x, y)
 
             self.velocity_x += del_x ** 2
-            x -= self.lr / (self.lr * self.eps) ** 0.5 * del_x
+            x -= (self.lr / (self.lr * self.eps) ** 0.5) * del_x
 
             self.velocity_y += del_y ** 2
-            y -= self.lr / (self.lr * self.eps) ** 0.5 * del_y
+            y -= (self.lr / (self.lr * self.eps) ** 0.5) * del_y
 
             plt.scatter(x, y, z, color='b')
 
@@ -119,26 +119,20 @@ class GradientDescentFamilyUpdated:
         :return: None
         """
         self.velocity_x, self.velocity_y = 0.0, 0.0
-        for epoch in range(30):
+        for epoch in range(35):
             z = x ** 2 + y ** 2
 
             del_x, del_y = self.Get_Gradient(x, y)
 
             self.velocity_x = (self.beta * self.velocity_x) + ((1 - self.beta) * del_x ** 2)
-            x -= self.lr / (self.lr * self.eps) ** 0.5 * del_x
+            x -= (self.lr / (self.lr * self.eps) ** 0.5) * del_x
 
             self.velocity_y = (self.beta * self.velocity_y) + ((1 - self.beta) * del_y ** 2)
-            y -= self.lr / (self.lr * self.eps) ** 0.5 * del_y
+            y -= (self.lr / (self.lr * self.eps) ** 0.5) * del_y
 
             plt.scatter(x, y, z, color='y')
 
         print(x, y)
 
-
-if __name__ == '__main__':
-    gd: GradientDescentFamilyUpdated = GradientDescentFamilyUpdated(0.0, 0.0, 0.01, 0.3, 0.4)
-
-    gd.Plot_MeshGrid(0.0, 0.0)
-    # gd.AdaGrad(10, 10, 0.001)
-    gd.RMSProp(10, 10)
-    plt.show()
+    def Show_Plot(self):
+        plt.show()
