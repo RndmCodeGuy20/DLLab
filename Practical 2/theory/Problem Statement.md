@@ -1,19 +1,3 @@
-<style>
-
-h1, h2, h3 {
-font-family: "Inria Serif Light", sans-serif;
-}
-body { 
-font-family: "IBM Plex Sans", sans-serif;
-font-weight: 400;
-}
-
-code { 
-font-weight: 600;
-}
-
-</style>
-
 ## Write a program to implement:
 
 1. Adaptive Gradient Descent
