@@ -4,8 +4,7 @@ import numpy as np
 
 fig = plt.figure(figsize=(10, 7))
 
-
-# ax = plt.axes(projection="3d")
+ax = plt.axes(projection="3d")
 
 
 class GradientDescentFamilyUpdated:
@@ -73,19 +72,19 @@ class GradientDescentFamilyUpdated:
     #     print(x, y)
 
     def Plot_MeshGrid(self, x, y):
-        feature_x = np.linspace(-10.0, 10.0, 101)
-        feature_y = np.linspace(-10.0, 10.0, 101)
+        X = np.linspace(-11.0, 11.0)
+        Y = np.linspace(-11.0, 11.0)
 
         # Creating 2-D grid of features
-        [X, Y] = np.meshgrid(feature_x, feature_y)
+        X, Y = np.meshgrid(X, Y)
 
         # fig, ax = plt.subplots(1, 1)
 
         Z = X ** 2 + Y ** 2
 
         # plots filled contour plot
-        plt.contourf(X, Y, Z, cmap='Spectral')
-        plt.colorbar()
+        ax.contour3D(X, Y, Z, 50, cmap='gray')
+        # plt.colorbar()
 
     def AdaGrad(self, x: float, y: float) -> None:
         """
@@ -107,7 +106,7 @@ class GradientDescentFamilyUpdated:
             self.velocity_y += del_y ** 2
             y -= (self.lr / (self.lr * self.eps) ** 0.5) * del_y
 
-            plt.scatter(x, y, z, color='b')
+            ax.scatter3D(x, y, z, color='b')
 
         print(x, y)
 
@@ -122,6 +121,8 @@ class GradientDescentFamilyUpdated:
         for epoch in range(35):
             z = x ** 2 + y ** 2
 
+            print(x, y)
+
             del_x, del_y = self.Get_Gradient(x, y)
 
             self.velocity_x = (self.beta * self.velocity_x) + ((1 - self.beta) * del_x ** 2)
@@ -130,8 +131,8 @@ class GradientDescentFamilyUpdated:
             self.velocity_y = (self.beta * self.velocity_y) + ((1 - self.beta) * del_y ** 2)
             y -= (self.lr / (self.lr * self.eps) ** 0.5) * del_y
 
-            plt.scatter(x, y, z, color='y')
-
+            # plt.scatter(x, y, z, color='y')
+            ax.scatter3D(x, y, z, color='red')
         print(x, y)
 
     def Show_Plot(self):
