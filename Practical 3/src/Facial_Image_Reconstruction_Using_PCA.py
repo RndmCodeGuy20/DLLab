@@ -5,61 +5,42 @@ from PIL import Image
 import matplotlib.pyplot as plt
 
 
-class FacialImageCompression:
-    Feature_Matrix = np.array([])
+class FacialImageCompressionUsingPCA:
 
     def __init__(self):
-        pass
+        self.facesList = os.listdir("D:\DLLab\Practical 3\data\lfwcrop_grey/faces")
+        self.X = []
 
-    def ShowImage(self):
-        images = []
-        for i in os.listdir('../data/lfwcrop_grey/faces/')[:10]:
-            image = np.array(Image.open(f'../data/lfwcrop_grey/faces/{i}'))
-            images.append(image)
+    def CreateXMatrix(self):
+        for face in self.facesList[:10]:
+            image = cv.imread(f"D:/DLLab/Practical 3/data/lfwcrop_grey/faces/{face}", 0)
+            print(image.shape)
+            self.X.append(np.ravel(np.array(image)))
 
-        images = np.array(images)
+            # self.X.append(cv.imread(f"D:/DLLab/Practical 3/data/lfwcrop_grey/faces/{face}", 0))
+        self.X = np.array(self.X)
+        print(self.X)
 
-        self.Feature_Matrix = images.reshape(10, 64 * 64)
-        print(self.Feature_Matrix.shape, images.shape)
+    def GetMeanFace(self):
+        meanFace = np.mean(self.X, axis=0)
+        # print(meanFace.shape)
 
-        plt.imshow(images[0], cmap='gray')
+        plt.imshow(meanFace, cmap='gray')
         plt.show()
 
-    def GetEigenVectors(self):
-        cov_matrix = np.cov(self.Feature_Matrix.T)
-        eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
+    def GetEigenFaces(self):
+        XTX = self.X.T.dot(self.X)
+        eigenvalues, eigenvectors = np.linalg.eig(XTX)
 
-        eigen_pair = [(np.abs(eigenvalues[i]), eigenvectors[:, i]) for i in range(len(eigenvalues))]
+        print(f"eigenvalues = {eigenvalues}, eigenvectors = {eigenvectors.shape}")
 
-        # Sort the pairs according to decreasing eigenvalues
-        eigen_pair.sort(key=lambda x: x[0], reverse=True)
+        # image = np.array(cv.imread(f"D:/DLLab/Practical 3/data/lfwcrop_grey/faces/Aaron_Eckhart_0001.pgm", 0))
+        image = np.zeros((64, 64))
+        for i in eigenvectors[:-5]:
+            image += i.reshape(64, 64).dot(self.X[0].reshape(64, 64).T).dot(i.reshape(64, 64))
 
-        # print(eigen_pair)
+        plt.imshow(image, cmap='gray')
+        plt.show()
 
-        keep_variance = 0.99
-
-        required_variance = keep_variance * sum(eigenvalues)
-
-        required_dim = 0
-        variance = 0
-        for i in range(len(eigen_pair)):
-            variance += eigen_pair[i][0]
-            if variance >= required_variance:
-                required_dim = i + 1
-                break
-
-        print('Total Dimensions: {}'.format(len(eigen_pair)))
-        print('Required Dimensions: {}'.format(required_dim))
-
-        projection_matrix = np.empty(shape=(self.Feature_Matrix.shape[1], required_dim))
-
-        for index in range(required_dim):
-            eigenvector = eigen_pair[index][1]
-            projection_matrix[:, index] = eigenvector
-
-        print('Projection Matrix Shape: \n {}'.format(projection_matrix.shape))
-        basis = projection_matrix.reshape(64, 64, required_dim)
-
-        plt.figure(figsize=(20, 30))
-
-        plt.imshow(basis[:, :, 0])
+    def PCA(self):
+        print(self.X[0])

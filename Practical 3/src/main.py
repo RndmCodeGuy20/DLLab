@@ -1,6 +1,9 @@
-from Facial_Image_Reconstruction_Using_PCA import FacialImageCompression
+from Facial_Image_Reconstruction_Using_PCA import FacialImageCompressionUsingPCA
 
 if __name__ == '__main__':
-    facRec = FacialImageCompression()
-    facRec.ShowImage()
-    facRec.GetEigenVectors()
+    fr = FacialImageCompressionUsingPCA()
+
+    fr.CreateXMatrix()
+    # fr.GetMeanFace()
+    # fr.PCA()
+    fr.GetEigenFaces()
