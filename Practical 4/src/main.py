@@ -1,8 +1,8 @@
 from Autoencoders_From_Scratch import AutoEncoders
+import numpy as np
 
 if __name__ == '__main__':
-    autoEnc = AutoEncoders()
+    AE = AutoEncoders()
 
-    autoEnc.Encoder()
-    autoEnc.Decoder()
-    autoEnc.CalculateLoss()
+    AE.Train()
+    # AE.Test()
