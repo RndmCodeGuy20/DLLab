@@ -10,8 +10,8 @@ class AutoEncoders:
         self.xi = np.array([0.1, 0.2, 0.3])
         self.W = np.random.randn(3, 2)
         self.W_dash = np.random.randn(2, 3)
-        self.learning_rate = 1
-        self.epochs = 10000
+        self.learning_rate = 5
+        self.epochs = 1000
 
     def ForwardPass(self):
         self.h_o = np.dot(self.xi, self.W)
@@ -24,7 +24,9 @@ class AutoEncoders:
             return np.exp(-x) / (1 + np.exp(-x)) ** 2
         return 1 / (1 + np.exp(-x))
 
-    def LossFunction(self, xi, xi_hat, derivative=False):
+    def LossFunction(self, xi, xi_hat, derivative=False, lossType="Linear"):
+        if lossType == 'Linear':
+            pass
         if derivative:
             return 2 * (xi_hat - xi) / len(xi)
         else:
@@ -32,7 +34,7 @@ class AutoEncoders:
 
     def BackwardPass(self, epoch):
         L_dash = self.LossFunction(self.xi, self.xi_hat)
-        print(f"{epoch}. Loss = {L_dash.reshape(1, 3)},xi = {self.xi}, xi_hat = {self.xi_hat}")
+        print(f"{epoch}. Loss = {L_dash.reshape(1, 3)},\nxi = {self.xi}, xi_hat = {self.xi_hat}")
 
         del_x_hat = L_dash * self.Sigmoid(self.xi_hat, derivative=True)
 
