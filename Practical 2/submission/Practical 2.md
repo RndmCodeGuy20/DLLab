@@ -1,12 +1,47 @@
-import matplotlib.pyplot as plt
-from matplotlib.patches import Patch
-from mpl_toolkits import mplot3d
+<style>
+h1, h2, h3
+{
+font-family: "Inria Serif", Times, serif;
+    font-variant-ligatures: common-ligatures;
+}
+
+body{
+    font-family: "IBM Plex Sans", sans-serif;
+    font-variant-ligatures: common-ligatures;
+}
+
+</style>
+
+# <center>Shri Ramdeobaba College of Engineering and Management<br>Nagpur, 440013</center>
+
+## <center>Department of Computer Science Engineering (AIML)</center>
+
+### <center>Deep Learning Lab</center>
+
+---
+
+**Name** : _Shantanu Mane_<br>
+**Roll No.** : _E63_<br>
+**Batch** : _CSE-AIML_<br>
+**Date** : _19/2/2023_<br>
+
+---
+
+### AIM - To implement AdaGrad and RMSProp based Gradient Descent algorithm to minimize the quadratic function in 3D.
+
+---
+
+## Importing Dependencies
+
+```python
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
 
-fig = plt.figure(figsize=(10, 7))
+## Gradient Descent Class
 
-ax = plt.axes(projection="3d")
-
+```python
 
 class GradientDescentFamilyUpdated:
     """
@@ -95,9 +130,6 @@ class GradientDescentFamilyUpdated:
 
             ax.scatter3D(x, y, z, color='#4f5d75', marker="*")
 
-        print("ADAGRAD: ")
-        print("final x: ", x, "final y: ", y)
-
     def RMSProp(self, x: float, y: float) -> None:
         """
 
@@ -118,13 +150,36 @@ class GradientDescentFamilyUpdated:
             y -= (self.lr / (self.lr * self.eps) ** 0.5) * del_y
 
             ax.scatter3D(x, y, z, color='#353535', marker="o")
-        print("RMSPROP: ")
-        print("final x: ", x, "final y: ", y)
 
     def Show_Plot(self):
         ax.legend(handles=[
             Patch(facecolor='#4f5d75', label="AdaGrad"),
             Patch(facecolor='#353535', label="RMSProp")
         ], loc="upper right")
-        # plt.legend(["AdaGrad", "RMSProp"], loc="upper right")
         plt.show()
+```
+
+## Main Function
+
+```python
+from Gradient_Descent_AdaGrad_RMSProp import GradientDescentFamilyUpdated
+
+if __name__ == '__main__':
+    gd: GradientDescentFamilyUpdated = GradientDescentFamilyUpdated(0.0, 0.0, 0.01, 0.3, 0.4)
+
+    gd.Plot_MeshGrid(0.0, 0.0)
+    gd.AdaGrad(13, 8)
+    gd.RMSProp(-13, -5)
+    gd.Show_Plot()
+```
+
+## Output
+
+```text
+ADAGRAD: 
+final x:  0.00014497302250782789 final y:  8.921416769712485e-05
+RMSPROP: 
+final x:  -2.166928094848852e-05 final y:  -8.334338826341736e-06
+```
+
+![img.png](img.png)

@@ -36,7 +36,7 @@ class FacialImageCompressionUsingPCA:
 
         # image = np.array(cv.imread(f"D:/DLLab/Practical 3/data/lfwcrop_grey/faces/Aaron_Eckhart_0001.pgm", 0))
         image = np.zeros((64, 64))
-        for i in eigenvectors:
+        for i in eigenvectors[:-10]:
             image += i.reshape(64, 64).dot(self.X[0].reshape(64, 64).T).dot(i.reshape(64, 64))
 
         plt.imshow(image, cmap='gray')
