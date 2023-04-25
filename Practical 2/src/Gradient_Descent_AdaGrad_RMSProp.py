@@ -44,6 +44,15 @@ class GradientDescentFamilyUpdated:
         self.beta = beta
         self.eps = eps
 
+    def Objective(self, x, y):
+        """
+
+        :param x:
+        :param y:
+        :return:
+        """
+        return (x - y ** 2) ** 2 + (1 - y) ** 2
+
     def Get_Gradient(self, x, y):
         """
 
@@ -56,22 +65,23 @@ class GradientDescentFamilyUpdated:
         --------
         :returns: dldx, dldy
         """
-        dldx = 2 * x
-        dldy = 2 * y
+        dldx = (x - y ** 2)
+        dldy = 400 * y ** 3 - 400 * x * y + 2 * y - 2
 
         return dldx, dldy
 
-    def Plot_MeshGrid(self, x, y):
-        X = np.linspace(-11.0, 11.0)
-        Y = np.linspace(-11.0, 11.0)
+    def Plot_MeshGrid(self):
+        X = np.arange(-2, 3.5, 0.1, dtype=np.float64)
+        Y = np.arange(-1.5, 2.0, 0.1, dtype=np.float64)
 
         # Creating 2-D grid of features
         X, Y = np.meshgrid(X, Y)
 
-        Z = X ** 2 + Y ** 2
+        Z = self.Objective(X, Y)
 
         # plots filled contour plot
-        ax.contour3D(X, Y, Z, 50, cmap='gray', alpha=0.3)
+        ax.plot_surface(X, Y, Z, cmap='twilight', edgecolor='none', alpha=0.8)
+        ax.view_init(30, 600)
 
     def AdaGrad(self, x: float, y: float) -> None:
         """
@@ -122,9 +132,9 @@ class GradientDescentFamilyUpdated:
         print("final x: ", x, "final y: ", y)
 
     def Show_Plot(self):
-        ax.legend(handles=[
-            Patch(facecolor='#4f5d75', label="AdaGrad"),
-            Patch(facecolor='#353535', label="RMSProp")
-        ], loc="upper right")
+        # ax.legend(handles=[
+        #     Patch(facecolor='#4f5d75', label="AdaGrad"),
+        #     Patch(facecolor='#353535', label="RMSProp")
+        # ], loc="upper right")
         # plt.legend(["AdaGrad", "RMSProp"], loc="upper right")
         plt.show()
