@@ -32,15 +32,8 @@ def Plot_MeshGrid():
 
     x, y = np.meshgrid(Data.X, Data.Y)
     z = objective_function(x, y)
-    # print(z.shape)
 
     ax.plot_surface(x, y, z, cmap='twilight_shifted', edgecolor='none', alpha=0.8)
-    # line, = ax.plot(x, y, z)
-    # ax.view_init(60, 60)
-    # ax.xlabel("X axis")
-    # plt.show()
-
-    # return line,
 
 
 def RMSProp(bounds, n_iter, step_size, lr):
@@ -74,7 +67,7 @@ def RMSProp(bounds, n_iter, step_size, lr):
         z = objective_function(solution[0], solution[1])
         Z.append(z)
 
-        # print(f"{it}. f({solution[0], solution[1]}) = {np.round(z, 5)}")
+        print(f"{it}. f({solution[0], solution[1]}) = {np.round(z, 5)}")
 
         # ax.scatter3D(solution[0], solution[1], z, color='b')
         # plt.pause(0.05)
@@ -87,7 +80,7 @@ def RMSProp(bounds, n_iter, step_size, lr):
     return [solution, z]
 
 
-bounds = np.asarray([[-1.0, 2.5], [-1.0, 2.5]])
+bounds = np.asarray([[-2.5, 2.5], [-2.5, 2.5]])
 
 iterations = 500
 step_size = 0.01
@@ -100,20 +93,22 @@ stop = time.perf_counter()
 
 print(f"Final : f({best[0], best[1]}) = {score}\nExecution time : {stop - start}s")
 
-# print(Z)
-
 line, = ax.plot(X, Y, Z, markersize=5, color='lime')
+text = ax.text(20, 20, 20, '', color='red')
 
 Plot_MeshGrid()
 
 
 def update(num):
+    if num >= len(Z):
+        num = len(Z) - 1
     line.set_data(X[:num], Y[:num])
     line.set_3d_properties(Z[:num])
-    return line,
+    text.set_text(f'Iteration - {num}')
+    text.set_position((X[num - 1], Y[num - 1], Z[num - 1]))
+    return line, text
 
 
-ani = FuncAnimation(fig, update, frames=100, interval=10, blit=True)
-# print(type(Data.X))
+ani = FuncAnimation(fig, update, frames=500, interval=100, blit=True)
 
 plt.show()

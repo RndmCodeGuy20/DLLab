@@ -11,22 +11,22 @@ ax = fig.add_subplot(111, projection='3d')
 t = np.linspace(0, 2 * np.pi, 100)
 x = np.sin(t)
 y = np.cos(t)
-
-# print(t)
-z = t
+z = np.zeros_like(t)
 
 # create the initial plot
-line, = ax.plot(x, y, z)
+line, = ax.plot(x, y, z, marker='o', markersize=1, color='red')
 
-
-# print(z)
+# add text annotation
+text = ax.text(x[-1], y[-1], z[-1], '', color='black')
 
 
 # define the update function
 def update(num):
     line.set_data(x[:num], y[:num])
     line.set_3d_properties(z[:num])
-    return line,
+    text.set_text(f'Frame {num}')
+    text.set_position((x[num], y[num], z[num]))
+    return line, text
 
 
 # create animation
